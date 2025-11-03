@@ -70,11 +70,13 @@ class SubmittersController < ApplicationController
     submitter.email = Submissions.normalize_email(attrs[:email]) if attrs.key?(:email)
 
     submitter.name = attrs[:name] if attrs.key?(:name)
+    
+    submitter.cpf = attrs[:cpf] if attrs.key?(:cpf)
 
     submitter
   end
 
   def submitter_params
-    params.require(:submitter).permit(:email, :name, :phone).transform_values(&:strip)
+    params.require(:submitter).permit(:email, :name, :phone, :cpf).transform_values(&:strip)
   end
 end

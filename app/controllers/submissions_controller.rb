@@ -98,7 +98,7 @@ class SubmissionsController < ApplicationController
   end
 
   def submissions_params
-    params.permit(submission: { submitters: [%i[uuid email phone name]] })
+    params.permit(submission: { submitters: [%i[uuid email phone name cpf]] })
   end
 
   def load_template

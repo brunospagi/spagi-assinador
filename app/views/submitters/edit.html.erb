@@ -6,14 +6,20 @@
           <submitters-autocomplete data-field="name">
             <%= text_field_tag 'submitter[name]', @submitter.name, autocomplete: 'off', class: 'base-input !h-10 w-full', placeholder: "#{t('name')} (#{t('optional')})", dir: 'auto' %>
           </submitters-autocomplete>
+
+          <submitters-autocomplete data-field="cpf">
+            <%= text_field_tag 'submitter[cpf]', @submitter.cpf, autocomplete: 'off', class: 'base-input !h-10 mt-1.5 w-full', placeholder: 'CPF', dir: 'auto', required: true %>
+          </submitters-autocomplete>
           <div class="grid md:grid-cols-2 gap-1.5 mt-1.5">
             <submitters-autocomplete data-field="email">
-              <%= email_field_tag 'submitter[email]', @submitter.email, autocomplete: 'off', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('email')} (#{t('optional')})" %>
+         
+             <%= email_field_tag 'submitter[email]', @submitter.email, autocomplete: 'off', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('email')} (#{t('optional')})" %>
             </submitters-autocomplete>
             <submitters-autocomplete data-field="phone">
               <%= telephone_field_tag 'submitter[phone]', @submitter.phone, autocomplete: 'off', pattern: '^\+[0-9\s\-]+$', class: 'base-input !h-10 mt-1.5 w-full', placeholder: "#{t('phone')} (#{t('optional')})", oninvalid: "this.value ? this.setCustomValidity('#{t('use_international_format_1xxx_')}') : ''", oninput: "this.setCustomValidity('')" %>
             </submitters-autocomplete>
-          </div>
+      
+           </div>
         </submitter-item>
       </div>
       <div>
