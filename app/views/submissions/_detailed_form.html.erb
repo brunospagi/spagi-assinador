@@ -34,11 +34,13 @@
                       <input type="tel" pattern="^\+[0-9\s\-]+$" oninvalid="this.value ? this.setCustomValidity('<%= t('use_international_format_1xxx_') %>') : ''" oninput="this.setCustomValidity('')" name="submission[1][submitters][][phone]" autocomplete="off" class="base-input !h-10 mt-1.5 w-full" placeholder="<%= "#{t('phone')} (#{t('optional')})" %>" id="detailed_phone_<%= item['uuid'] %>">
                     </linked-input>
                   </submitters-autocomplete>
-                    <div class="form-control">
-                     <%= s.label :cpf, 'CPF', class: 'label' %>
-                      <%= s.text_field :cpf, value: s.object.cpf, class: 'base-input', autocomplete: 'off', required: true %>
-                    </div>
-                </div>
+
+                  <submitters-autocomplete data-field="cpf">
+                    <linked-input data-target-id="<%= "detailed_cpf_#{item['linked_to_uuid']}" if item['linked_to_uuid'].present? %>">
+                      <input type="text" name="submission[1][submitters][][cpf]" autocomplete="off" class="base-input !h-10 mt-1.5 w-full" placeholder="CPF" required id="detailed_cpf_<%= item['uuid'] %>">
+                    </linked-input>
+                  </submitters-autocomplete>
+                  </div>
               </submitter-item>
             <% end %>
           </div>
