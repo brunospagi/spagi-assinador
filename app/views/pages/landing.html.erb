@@ -1,0 +1,34 @@
+<section class="flex items-center justify-center">
+  <div class="py-10 mx-auto max-w-7xl">
+    <div class="max-w-xl mx-auto">
+      <div class="text-center">
+        <div class="relative flex flex-col items-center">
+          <%= render 'shared/logo', width: '100', height: '100' %>
+          <h1 class="text-6xl font-bold mt-4 mb-4">
+            Assinador Digital
+          </h1>
+        </div>
+        <h2 class="mt-4 mb-16 text-lg text-center text-gray-600">
+        Uma plataforma web e de código aberto que fornece assinatura e processamento seguro e eficiente de documentos digitais.        </h2>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 gap-12 md:gap-10 md:grid-cols-2">
+      </div>
+      <div class="card bg-base-200">
+        <div class="card-body">
+          <div class="text-center transition-all">
+            <div class="inline-block p-4 mb-4 -mt-16 bg-base-content rounded-full">
+              <%= svg_icon('devices', class: 'w-10 h-10 text-base-100') %>
+            </div>
+            <h3 class="mb-4 text-2xl font-semibold">Otimizado para celular.</h3>
+            <p class="text-base text-gray-500">
+            Revise e assine documentos digitais on-line em qualquer dispositivo.
+            Os formulários de documentos Assinador Spagi são otimizados para telas de todos os tamanhos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</section>
+<%= render 'shared/attribution', with_counter: true %>

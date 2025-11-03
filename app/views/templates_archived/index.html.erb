@@ -1,0 +1,26 @@
+<div>
+  <%= link_to root_path do %>
+    &larr;
+    <span><%= t('back_to_active') %></span>
+  <% end %>
+</div>
+<div class="flex justify-between mb-4 items-center">
+  <div>
+  <h1 class="text-4xl font-bold md:block <%= 'hidden' if params[:q].present? %>"><%= t('document_templates_html') %> <span class="badge badge-outline badge-lg align-middle"><%= t('archived') %></span></h1>
+  </div>
+  <% if params[:q].present? || @pagy.pages > 1 %>
+    <%= render 'shared/search_input', placeholder: "#{t('search')}..." %>
+  <% end %>
+</div>
+<% if @pagy.count > 0 %>
+  <div class="grid gap-4 md:grid-cols-3">
+    <%= render partial: 'templates/template', collection: @templates %>
+  </div>
+<% elsif params[:q].present? %>
+  <div class="text-center">
+    <div class="mt-16 text-3xl font-semibold">
+      <%= t('templates_not_found') %>
+    </div>
+  </div>
+<% end %>
+<%= render 'shared/pagination', pagy: @pagy, items_name: 'templates' %>

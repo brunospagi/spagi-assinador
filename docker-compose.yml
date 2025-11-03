@@ -1,0 +1,46 @@
+services:
+  app:
+    depends_on:
+      postgres:
+        condition: service_healthy
+    image: assinador/1.0:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./docuseal:/data/docuseal
+    environment:
+      - FORCE_SSL=${HOST}
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      - SMTP_USERNAME = brunospagi@gmail.com
+      - SMTP_ADDRESS = smtp.gmail.com
+      - SMTP_PORT = 465
+      - SMTP_PASSWORD = mwim Idhw Irfb urrt
+      - SMTP_AUTHENTICATION = login
+      - SMTP_FROM = brunospagi@gmail.com
+      - SMTP_ENABLE_STARTTLS_AUTO = false
+      - FORCE_SSL = true
+  postgres:
+    image: postgres:15
+    volumes:
+      - './pg_data:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: docuseal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  caddy:
+    image: caddy:latest
+    command: caddy reverse-proxy --from $HOST --to app:3000
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - .:/data
+    environment:
+      - HOST=${HOST}

@@ -1,0 +1,71 @@
+<div class="h-36 relative group">
+  <a href="<%= template_path(template) %>" class="flex h-full flex-col justify-between rounded-2xl pt-6 px-7 w-full bg-base-200 peer">
+    <div class="pb-4 text-xl font-semibold" style="overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
+      <% if template.template_accesses.present? %>
+        <%= svg_icon('lock', class: 'w-6 h-6 inline -translate-y-[4px]') %>
+      <% end %>
+      <% template.name.split(/(_)/).each do |item| %><%= item %><wbr><% end %>
+    </div>
+    <div class="pb-6 pt-1 space-y-1">
+      <p class="flex items-center space-x-1 text-xs text-base-content/60">
+        <%= svg_icon('user', class: 'w-4 h-4') %>
+        <span><%= template.author.full_name.presence || template.author.email.to_s.sub(/\+\w+@/, '@') %></span>
+        <% if template.account_id != current_account.id %>
+          <span class="badge badge-neutral badge-outline badge-sm text-[10px] uppercase"><%= t('shared') %></span>
+        <% end %>
+      </p>
+      <p class="flex text-xs text-base-content/60">
+        <span class="flex items-center space-x-1 w-1/2">
+          <%= svg_icon('calendar', class: 'w-4 h-4') %>
+          <span><%= l(template.created_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) %></span>
+        </span>
+        <% if template.archived_at? %>
+          <span class="flex items-center space-x-1 w-1/2">
+            <%= svg_icon('folder', class: 'w-4 h-4 flex-shrink-0') %>
+            <span class="truncate"><%= template.folder.name %></span>
+          </span>
+        <% end %>
+      </p>
+    </div>
+  </a>
+  <div class="absolute top-0 bottom-0 w-0 flex items-center hidden md:group-hover:flex" style="right: 37px">
+    <div class="space-y-1">
+      <% if can?(:update, template) && !template.archived_at? && template.account_id == current_account.id %>
+        <span class="tooltip tooltip-left" data-tip="<%= t('move') %>">
+          <a href="<%= edit_template_folder_path(template.id) %>" data-turbo-frame="modal" class="btn btn-xs hover:btn-outline bg-base-200 btn-circle">
+            <%= svg_icon('folder_share', class: 'w-4 h-4') %>
+          </a>
+        </span>
+      <% end %>
+      <% if template.archived_at? && can?(:update, template) %>
+        <span class="tooltip tooltip-left" data-tip="<%= t('restore') %>">
+          <%= button_to template_restore_index_path(template), class: 'btn btn-xs hover:btn-outline bg-base-200 btn-circle' do %>
+            <%= svg_icon('rotate', class: 'w-4 h-4 enabled') %>
+            <%= svg_icon('loader', class: 'w-4 h-4 animate-spin disabled') %>
+          <% end %>
+        </span>
+      <% elsif can?(:update, template) %>
+        <span class="tooltip tooltip-left" data-tip="<%= t('edit') %>">
+          <a href="<%= edit_template_path(template) %>" class="btn btn-xs hover:btn-outline bg-base-200 btn-circle">
+            <%= svg_icon('pencil', class: 'w-4 h-4') %>
+          </a>
+        </span>
+      <% end %>
+      <% if can?(:create, template) %>
+        <span class="tooltip tooltip-left" data-tip="<%= t('clone') %>">
+          <a href="<%= new_template_path(base_template_id: template.id) %>" data-turbo-frame="modal" class="btn btn-xs hover:btn-outline bg-base-200 btn-circle">
+            <%= svg_icon('copy', class: 'w-4 h-4') %>
+          </a>
+        </span>
+      <% end %>
+      <% if can?(:destroy, template) %>
+        <span class="tooltip tooltip-left" data-tip="<%= template.archived_at? ? t('delete') : t('archive') %>">
+          <%= button_to template_path(template), data: template.archived_at? ? { turbo_confirm: t('template_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_') } : {}, params: { permanently: template.archived_at? }.compact_blank, method: :delete, class: 'btn btn-xs hover:btn-outline bg-base-200 btn-circle', aria_label: t('restore') do %>
+            <%= svg_icon(template.archived_at? ? 'trash' : 'archive', class: 'w-4 h-4 enabled') %>
+            <%= svg_icon('loader', class: 'w-4 h-4 animate-spin disabled') %>
+          <% end %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+</div>

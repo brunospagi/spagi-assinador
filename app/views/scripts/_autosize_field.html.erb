@@ -1,0 +1,19 @@
+<script>
+  if (!window.customElements.get('autosize-field')) {
+    window.customElements.define('autosize-field', class extends HTMLElement {
+      connectedCallback() {
+        if (this.field.scrollHeight > this.field.clientHeight) {
+          this.field.classList.remove('text-[1.6vw]', 'lg:text-base');
+          this.field.classList.add('text-[1.0vw]', 'lg:text-[0.70rem]');
+
+          if (this.field.scrollHeight > this.field.clientHeight) {
+            this.field.classList.add('text-[0.8vw]', 'lg:text-[0.50rem]');
+          }
+        }
+      }
+      get field() {
+        return this.closest('field-value');
+      }
+    });
+  }
+</script>

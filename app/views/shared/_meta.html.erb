@@ -1,0 +1,30 @@
+<% if Docuseal.demo? || (request.path != '/' && !devise_controller?) %>
+  <meta name="robots" content="noindex">
+<% end %>
+<% title = content_for(:html_title) || (signed_in? ? 'SpagiSistemas' : 'SpagiSistemas | Assinador Digital') %>
+<% description = content_for(:html_description) || 'Assinador Spagi Sistemas' %>
+<meta name="description" content="<%= description %>">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= description %>">
+<meta property="og:type" content="website">
+<meta property="og:url" content="<%= root_url %>">
+<meta property="og:site_name" content="SpagiSistemas">
+<% if content_for(:disable_image_preview) %>
+  <meta property="og:image" content="">
+  <meta name="twitter:image" content="">
+<% else %>
+  <meta property="og:image" content="<%= image_pack_url('images/preview.png') %>">
+  <meta property="og:image:width" content="800">
+  <meta property="og:image:height" content="800">
+  <meta name="twitter:image" content="<%= image_pack_url('images/preview.png') %>">
+<% end %>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@SpagiSistemas">
+<meta name="twitter:site" content="@SpagiSistemas">
+<meta name="twitter:title" content="SpagiSistemas">
+<meta name="twitter:description" content="<%= description %>">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<meta name="theme-color" content="#faf7f5">

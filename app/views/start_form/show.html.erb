@@ -1,0 +1,42 @@
+<% content_for(:html_title, "#{@template.name} | Spagi Sistemas") %>
+<% content_for(:html_description, "#{@template.account.name} Convidou você a preencher e assinar documentos on-line sem esforço com uma solução de assinatura digital de documentos segura, rápida e fácil de usar.") %>
+<div class="max-w-md mx-auto px-2 mt-12 mb-4">
+  <div class="space-y-6 mx-auto">
+    <div class="space-y-6"> 
+      <div class="text-center w-full space-y-6">
+        <%= render 'banner' %>
+        <% unless @template.archived_at? %>
+          <p class="text-xl font-semibold text-center"><%= t('you_have_been_invited_to_submit_a_form') %></p>
+        <% end %>
+      </div>
+      <div class="flex items-center bg-base-200 rounded-xl p-4 mb-4">
+        <div class="flex items-center">
+          <div class="mr-3">
+            <%= svg_icon('writing_sign', class: 'w-10 h-10') %>
+          </div>
+          <div>
+            <p class="text-lg font-bold mb-1"><%= @template.name %></p>
+            <% if @template.archived_at? %>
+              <p dir="auto" class="text-sm"><%= t('form_has_been_deleted_by_html', name: @template.account.name) %></p>
+            <% else %>
+              <p dir="auto" class="text-sm"><%= t('invited_by_html', name: @template.account.name) %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if !@template.archived_at? && !@template.account.archived_at? %>
+      <%= form_for @submitter, url: start_form_path(@template.slug), data: { turbo_frame: :_top }, method: :put, html: { class: 'space-y-4' } do |f| %>
+        <div dir="auto" class="form-control !mt-0">
+          <%= f.label :email, t('email'), class: 'label' %>
+          <%= f.email_field :email, value: current_user&.email || params[:email] || @submitter.email, required: true, class: 'base-input', placeholder: t('provide_your_email_to_start') %>
+          <%= @error_message %>
+        </div>
+        <toggle-submit dir="auto" class="form-control">
+          <%= f.button button_title(title: t('start'), disabled_with: t('starting')), class: 'base-button' %>
+        </toggle-submit>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<%= render 'shared/attribution', link_path: '/start', account: @template.account %>
