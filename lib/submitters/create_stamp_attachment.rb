@@ -79,6 +79,16 @@ module Submitters
                submitter.name || submitter.email || submitter.phone
              end
 
+      # --- INÍCIO DA MODIFICAÇÃO ---
+      # Encontra o campo "CPF" (ignorando maiúsculas/minúsculas e espaços)
+      # e obtém seu valor.
+      cpf_field = submitter.submission.template.fields.find do |f|
+        f['name']&.strip&.casecmp('cpf')&.zero?
+      end
+
+      cpf_value = cpf_field ? submitter.values[cpf_field['uuid']] : nil
+      # --- FIM DA MODIFICAÇÃO ---
+
       role = if submitter.submission.template_submitters.size > 1
                item = submitter.submission.template_submitters.find { |e| e['uuid'] == submitter.uuid }
 
@@ -92,7 +102,12 @@ module Submitters
       name = ERB::Util.html_escape(name)
       role = ERB::Util.html_escape(role)
 
-      text = %(<span size="90">#{digitally_signed_by}:\n<b>#{name}</b>\n#{role}#{time} #{timezone}</span>)
+      # --- INÍCIO DA MODIFICAÇÃO ---
+      # Adiciona o CPF ao texto final se ele existir
+      cpf_line = cpf_value.present? ? "\nCPF: #{ERB::Util.html_escape(cpf_value)}" : ""
+
+      text = %(<span size="90">#{digitally_signed_by}:\n<b>#{name}#{cpf_line}</b>\n#{role}#{time} #{timezone}</span>)
+      # --- FIM DA MODIFICAÇÃO ---
 
       Vips::Image.text(text, width: WIDTH, height: HEIGHT, wrap: :'word-char')
     end
