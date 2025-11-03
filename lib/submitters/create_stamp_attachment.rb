@@ -80,13 +80,8 @@ module Submitters
              end
 
       # --- INÍCIO DA MODIFICAÇÃO ---
-      # Encontra o campo "CPF" (ignorando maiúsculas/minúsculas e espaços)
-      # e obtém seu valor.
-      cpf_field = submitter.submission.template.fields.find do |f|
-        f['name']&.strip&.casecmp('cpf')&.zero?
-      end
-
-      cpf_value = cpf_field ? submitter.values[cpf_field['uuid']] : nil
+      # Lê o CPF diretamente da coluna 'cpf' do signatário
+      cpf_value = submitter.cpf
       # --- FIM DA MODIFICAÇÃO ---
 
       role = if submitter.submission.template_submitters.size > 1

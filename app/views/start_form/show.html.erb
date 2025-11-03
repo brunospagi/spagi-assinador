@@ -35,25 +35,10 @@
           <%= @error_message %>
         </div>
 
-        <%
-          # Procura pelo campo 'CPF' no modelo
-          cpf_field = @template.fields.find do |field|
-            field['name']&.strip&.casecmp('cpf')&.zero?
-          end
-        %>
-        <%# Se o campo CPF existir %>
-        <% if cpf_field %>
-          <div dir="auto" class="form-control">
-            <label for="submitter_cpf" class="label"><%= cpf_field['name'] %></label>
-            <input
-              id="submitter_cpf"
-              class="base-input"
-              type="text"
-              name="submitter[values][<%= cpf_field['uuid'] %>]"
-              required
-            >
-          </div>
-        <% end %>
+        <div dir="auto" class="form-control">
+          <%= f.label :cpf, 'CPF', class: 'label' %>
+          <%= f.text_field :cpf, required: true, class: 'base-input', placeholder: 'Digite seu CPF' %>
+        </div>
         <toggle-submit dir="auto" class="form-control">
           <%= f.button button_title(title: t('start'), disabled_with: t('starting')), class: 'base-button' %>
         </toggle-submit>
