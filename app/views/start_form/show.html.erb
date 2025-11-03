@@ -14,7 +14,8 @@
           <div class="mr-3">
             <%= svg_icon('writing_sign', class: 'w-10 h-10') %>
           </div>
-          <div>
+         
+         <div>
             <p class="text-lg font-bold mb-1"><%= @template.name %></p>
             <% if @template.archived_at? %>
               <p dir="auto" class="text-sm"><%= t('form_has_been_deleted_by_html', name: @template.account.name) %></p>
@@ -25,6 +26,7 @@
         </div>
       </div>
     </div>
+    
     <% if !@template.archived_at? && !@template.account.archived_at? %>
       <%= form_for @submitter, url: start_form_path(@template.slug), data: { turbo_frame: :_top }, method: :put, html: { class: 'space-y-4' } do |f| %>
         <div dir="auto" class="form-control !mt-0">
@@ -32,6 +34,26 @@
           <%= f.email_field :email, value: current_user&.email || params[:email] || @submitter.email, required: true, class: 'base-input', placeholder: t('provide_your_email_to_start') %>
           <%= @error_message %>
         </div>
+
+        <%
+          # Procura pelo campo 'CPF' no modelo
+          cpf_field = @template.fields.find do |field|
+            field['name']&.strip&.casecmp('cpf')&.zero?
+          end
+        %>
+        <%# Se o campo CPF existir %>
+        <% if cpf_field %>
+          <div dir="auto" class="form-control">
+            <label for="submitter_cpf" class="label"><%= cpf_field['name'] %></label>
+            <input
+              id="submitter_cpf"
+              class="base-input"
+              type="text"
+              name="submitter[values][<%= cpf_field['uuid'] %>]"
+              required
+            >
+          </div>
+        <% end %>
         <toggle-submit dir="auto" class="form-control">
           <%= f.button button_title(title: t('start'), disabled_with: t('starting')), class: 'base-button' %>
         </toggle-submit>
