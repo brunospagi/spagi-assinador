@@ -80,7 +80,7 @@ module Submitters
              end
 
       # --- INÍCIO DA MODIFICAÇÃO ---
-      # Lê o CPF diretamente da coluna 'cpf' do signatário
+      # Lê o CPF diretamente da coluna 'cpf' do signatário (submitter)
       cpf_value = submitter.cpf
       # --- FIM DA MODIFICAÇÃO ---
 
